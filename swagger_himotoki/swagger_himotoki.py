@@ -5,6 +5,10 @@ import os
 import yaml
 from jinja2 import Environment, FileSystemLoader
 
+reserved_word_dict = {
+    'self': '_self', 
+}
+
 swift_type_dict = {
     'integer': 'Int', 
     'number': 'Float', 
@@ -48,6 +52,11 @@ def himotoki_extraction(is_required, is_array):
     if is_required:
         return '<|'
     return '<|?'
+
+def safe_reserved_word(keyword):
+    if keyword in reserved_word_dict:
+        return reserved_word_dict[keyword]
+    return keyword
 
 class DefinitionVO(object):
     class_name = ''
@@ -200,6 +209,7 @@ class SwaggerHimotoki(object):
         cls.jinja_env.filters['pascalize'] = pascalize
         cls.jinja_env.filters['swift_type'] = swift_type
         cls.jinja_env.filters['himotoki_extraction'] = himotoki_extraction
+        cls.jinja_env.filters['safe_reserved_word'] = safe_reserved_word
 
     @classmethod
     def get_rendered_source(cls, template_path, **args):

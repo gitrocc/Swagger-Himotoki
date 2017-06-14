@@ -12,7 +12,7 @@ struct {{ definition.class_name }}: Decodable {
     }
     {%- endfor %}
     {% for property in definition.properties %}
-    let {{ property.key_name | camelize }}: {% if property.is_array -%} [ {%- endif -%}
+    let {{ property.key_name | camelize | safe_reserved_word }}: {% if property.is_array -%} [ {%- endif -%}
         {{  property.property_type | swift_type(property.class_name_ref) }}
         {%- if property.is_array -%} ] {%- endif %}
         {%- if not property.is_required -%} ? {%- endif %}
@@ -21,7 +21,7 @@ struct {{ definition.class_name }}: Decodable {
     static func decode(_ ext: Extractor) throws -> {{ definition.class_name }} {
         return try {{ definition.class_name }}(
             {%- for property in definition.properties %}
-            {{ property.key_name | camelize }}: {# -#}
+            {{ property.key_name | camelize | safe_reserved_word }}: {# -#}
             {%- if property.is_enum -%} {{ property.class_name_ref }}(rawValue: {% endif -%}
             ext {{  property.is_required | himotoki_extraction(property.is_array) | safe }} "{{ property.key_name }}" {#- -#}
             {%- if property.is_enum -%} ) {%- if property.is_required -%} ! {%- endif -%} {%- endif -%}
