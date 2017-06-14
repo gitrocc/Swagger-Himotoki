@@ -194,7 +194,8 @@ class SwaggerHimotoki(object):
     def init_jinja_env_if_needed(cls):
         if cls.jinja_env:
             return
-        cls.jinja_env = Environment(loader=FileSystemLoader('', encoding='utf8'), autoescape=True)
+        current_path = os.path.abspath(os.path.dirname(__file__))
+        cls.jinja_env = Environment(loader=FileSystemLoader(current_path, encoding='utf8'), autoescape=True)
         cls.jinja_env.filters['camelize'] = camelize
         cls.jinja_env.filters['pascalize'] = pascalize
         cls.jinja_env.filters['swift_type'] = swift_type
