@@ -138,7 +138,7 @@ class SwaggerHimotoki(object):
 
             property_type = prop_obj['type'] if 'type' in meta_keys else ''
             property_format = prop_obj['format'] if 'format' in meta_keys else property_type
-            class_name_ref = cls.get_ref_class_name(prop_obj['$ref']) if '$ref' in meta_keys else None
+            class_name_ref = cls.prefix + cls.get_ref_class_name(prop_obj['$ref']) if '$ref' in meta_keys else None
 
             if prop_key in required_props:
                 is_required = True
