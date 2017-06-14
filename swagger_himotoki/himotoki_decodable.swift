@@ -30,3 +30,4 @@ struct {{ definition.class_name }}: Decodable {
         )
     }
 }
+
