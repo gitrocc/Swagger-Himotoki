@@ -22,9 +22,14 @@ struct {{ definition.class_name }}: Decodable {
         return try {{ definition.class_name }}(
             {%- for property in definition.properties %}
             {{ property.key_name | camelize | safe_reserved_word }}: {# -#}
-            {%- if property.is_enum -%} {{ property.class_name_ref }}(rawValue: {% endif -%}
+
+            {%- if property.is_enum -%} {{ property.class_name_ref }}(rawValue: {# -#}
+            ext <| "{{ property.key_name }}" {#- -#}
+            ) {%- if property.is_required -%} ! {%- endif -%}
+            {%- else -%}
             ext {{  property.is_required | himotoki_extraction(property.is_array) | safe }} "{{ property.key_name }}" {#- -#}
-            {%- if property.is_enum -%} ) {%- if property.is_required -%} ! {%- endif -%} {%- endif -%}
+            {%- endif -%}
+
             {%- if not loop.last -%} , {%- endif %}
             {%- endfor %}
         )
