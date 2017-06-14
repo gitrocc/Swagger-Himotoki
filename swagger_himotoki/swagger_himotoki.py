@@ -217,5 +217,5 @@ class SwaggerHimotoki(object):
     @classmethod
     def export_himotoki(cls):
         for definition in cls.definitions:
-            source = cls.get_rendered_source('swagger_himotoki/himotoki_decodable.swift', definition=definition)
+            source = cls.get_rendered_source('himotoki_decodable.swift', definition=definition)
             cls.add_file(definition.class_name+'.swift', source)
