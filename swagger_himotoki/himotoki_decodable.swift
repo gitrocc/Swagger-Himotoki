@@ -15,6 +15,7 @@ struct {{ definition.class_name }}: Decodable {
     let {{ property.key_name | camelize }}: {% if property.is_array -%} [ {%- endif -%}
         {{  property.property_type | swift_type(property.class_name_ref) }}
         {%- if property.is_array -%} ] {%- endif %}
+        {%- if not property.is_required -%} ? {%- endif %}
     {%- endfor %}
 
     static func decode(_ ext: Extractor) throws -> {{ definition.class_name }} {
