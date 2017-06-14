@@ -14,8 +14,11 @@ setup(
     classifiers=[ 
         'License :: OSI Approved :: MIT License',
     ],
-    packages=find_packages(), 
-    include_package_data=False, 
+    packages=['swagger_himotoki'], 
+    package_data={
+        'swagger_himotoki': ['*.swift'],
+    },
+    include_package_data=True, 
     keywords=['Swagger', 'Himotoki', 'Swift'], 
     license='MIT License', 
     install_requires=[ 
