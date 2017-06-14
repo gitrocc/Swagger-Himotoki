@@ -6,7 +6,7 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 
 reserved_word_dict = {
-    'self': '_self', 
+    'self': 'selfRef', 
 }
 
 swift_type_dict = {
