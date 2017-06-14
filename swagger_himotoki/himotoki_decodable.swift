@@ -10,8 +10,8 @@ struct {{ definition.class_name }}: Decodable {
         case {{ enum_key }} = "{{ enum_value }}"
         {%- endfor %}
     }
-    {%- endfor %}
-    {% for property in definition.properties %}
+    {%- endfor -%}
+    {%- for property in definition.properties %}
     let {{ property.key_name | camelize | safe_reserved_word }}: {% if property.is_array -%} [ {%- endif -%}
         {{  property.property_type | swift_type(property.class_name_ref) }}
         {%- if property.is_array -%} ] {%- endif %}
