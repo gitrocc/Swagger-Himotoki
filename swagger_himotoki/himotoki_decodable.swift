@@ -3,7 +3,7 @@
 import Foundation
 import Himotoki
 
-struct {{ definition.class_name }}: Decodable {
+struct {{ definition.class_name }}: Himotoki.Decodable {
     {%- for enum in definition.enums %}
     public enum {{ enum.enum_name }}: {{ enum.enum_type | swift_type('') }} {
         {%- for enum_key, enum_value in enum.enum_dict.items() %}
@@ -23,9 +23,15 @@ struct {{ definition.class_name }}: Decodable {
             {%- for property in definition.properties %}
             {{ property.key_name | camelize | safe_reserved_word }}: {# -#}
 
-            {%- if property.is_enum -%} {{ property.class_name_ref }}(rawValue: {# -#}
-            ext <| "{{ property.key_name }}" {#- -#}
-            ) {%- if property.is_required -%} ! {%- endif -%}
+            {%- if property.is_enum -%} 
+            {#- enum case -#}
+                {%- if property.is_array -%}
+                (ext <|| "{{ property.key_name }}").map { {{ property.class_name_ref }}(rawValue: $0)! }
+                {%- else -%}
+                {{ property.class_name_ref }}(rawValue: {# -#}
+                ext <| "{{ property.key_name }}" {#- -#}
+                ) {%- if property.is_required -%} ! {%- endif -%}
+                {%- endif -%}
             {%- else -%}
             ext {{  property.is_required | himotoki_extraction(property.is_array) | safe }} "{{ property.key_name }}" {#- -#}
             {%- endif -%}
