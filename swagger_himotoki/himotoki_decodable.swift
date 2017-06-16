@@ -28,9 +28,11 @@ struct {{ definition.class_name }}: Himotoki.Decodable {
                 {%- if property.is_array -%}
                 (ext <|| "{{ property.key_name }}").map { {{ property.class_name_ref }}(rawValue: $0)! }
                 {%- else -%}
-                {{ property.class_name_ref }}(rawValue: {# -#}
-                ext <| "{{ property.key_name }}" {#- -#}
-                )!
+                    {%- if property.is_required -%}
+                    {{ property.class_name_ref }}(rawValue: ext <| "{{ property.key_name }}")!
+                    {%- else -%}
+                    {{ property.class_name_ref }}(rawValue: ext <|? "{{ property.key_name }}" ?? "")
+                    {%- endif -%}
                 {%- endif -%}
             {%- else -%}
             ext {{  property.is_required | himotoki_extraction(property.is_array) | safe }} "{{ property.key_name }}" {#- -#}
