@@ -30,7 +30,7 @@ struct {{ definition.class_name }}: Himotoki.Decodable {
                 {%- else -%}
                 {{ property.class_name_ref }}(rawValue: {# -#}
                 ext <| "{{ property.key_name }}" {#- -#}
-                ) {%- if property.is_required -%} ! {%- endif -%}
+                )!
                 {%- endif -%}
             {%- else -%}
             ext {{  property.is_required | himotoki_extraction(property.is_array) | safe }} "{{ property.key_name }}" {#- -#}
